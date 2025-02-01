@@ -1,30 +1,44 @@
+# Name of the workflow
 name: Deploy to Surge
 
+# This triggers the workflow when a push is made to the 'main' branch.
 on:
   push:
     branches: [ main ]
 
+# The job will run on the latest version of Ubuntu.
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+   
+   
+    steps:  
+    - name: Checkout Repository # This checks out the repository's code to the runner environment. 
+      uses: actions/checkout@v4 # This allows the workflow to access the code in the repository for further steps.
 
     - name: Setup Node.js
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v4 # This sets up a Node.js environment on the runner
       with:
-        node-version: 18
-
+        node-version: 18   # Specifies that Node.js version 18 should be used.
+     
+     # Runs `npm install` to install all the project dependencies listed in `package.json`.
+     # This is essential to ensure that the project can be built successfully with all the required libraries.
     - name: Install Dependencies
-      run: npm install
-
+      run: npm install 
+      
+    # Runs the `build` script specified in `package.json` to build the project.
+    # This step compiles the project and prepares it for deployment (e.g., creating the production build).
     - name: Build Project
-      run: npm run build
-
+      run: npm run build 
+      
+    
+     # Installs Surge CLI globally on the runner.
+     # Surge CLI is used to deploy static sites, and this step ensures that the tool is available for deployment.
     - name: Install Surge
       run: npm install --global surge
 
+     # This deploys the content of the `./build` directory (which contains the production build) to Surge.
+      # The URL `https://hasan-testing12345-workflow.surge.sh/` is the Surge site where the project will be deployed.
+      # The `--token` flag is used to authenticate the Surge CLI using a secret stored in GitHub Secrets called SURGE_TOKEN.
     - name: Deploy to Surge
       run: surge ./build https://hasan-testing12345-workflow.surge.sh/ --token ${{ secrets.SURGE_TOKEN }}
