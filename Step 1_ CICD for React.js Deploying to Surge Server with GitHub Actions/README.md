@@ -128,16 +128,21 @@ surge ./build https://shoes_store1.surge.sh/ --token ${{ secrets.SURGE_TOKEN }}
 - You **must set the Surge token in GitHub Secrets**(under Settings → Secrets and variables).
 
 
-# Final Workflow Summary
 
- When you push to ``main``, GitHub Actions:
 
-#### ✅ Checks out the repo.
-#### ✅ Sets up Node.js 18.
-#### ✅ Installs dependencies using Yarn.
-#### ✅ Builds the React.js project.
-#### ✅ Installs Surge.
-#### ✅ Deploys the build to https://shoes_store1.surge.sh/ using Surge Token.
+## Summary of Workflow:
+
+- **Trigger**: The workflow is triggered when a push event occurs on the `main` branch.
+- **Runner**: It runs on an Ubuntu environment (`ubuntu-latest`).
+
+### Steps:
+1. **Checkout**: The repository's code is fetched into the GitHub Actions runner.
+2. **Setup Node.js**: Node.js is set up in the environment using version 18, as specified.
+3. **Install Dependencies**: All project dependencies listed in the `package.json` are installed using `npm install`.
+4. **Build Project**: The `npm run build` command is executed to build the project and prepare it for deployment.
+5. **Install Surge**: The Surge CLI tool is installed globally, which is required for deployment.
+6. **Deploy to Surge**: The build is deployed to Surge using the Surge CLI. The deployment uses a token stored in the GitHub Secrets for authentication.
+
 
 
 
